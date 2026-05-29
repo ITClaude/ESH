@@ -3,20 +3,42 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Ecole Saint Hannibal API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: slides
+    description: Hero slider management
+  - name: news
+    description: News articles
+  - name: events
+    description: Events and calendar
+  - name: gallery
+    description: Photo and video gallery
+  - name: staff
+    description: Staff directory
+  - name: classes
+    description: Class profiles
+  - name: downloads
+    description: Downloadable resources
+  - name: contact
+    description: Contact form messages
+  - name: admin
+    description: Admin authentication and management
+  - name: settings
+    description: Site settings
+  - name: dashboard
+    description: Admin dashboard stats
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +46,1718 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ── SLIDES ──────────────────────────────────────────────
+  /slides:
+    get:
+      operationId: getSlides
+      tags: [slides]
+      summary: List all active slides (public)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Slide"
+    post:
+      operationId: createSlide
+      tags: [slides]
+      summary: Create a slide (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SlideInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Slide"
+
+  /slides/all:
+    get:
+      operationId: getAllSlides
+      tags: [slides]
+      summary: List all slides including inactive (admin)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Slide"
+
+  /slides/{id}:
+    patch:
+      operationId: updateSlide
+      tags: [slides]
+      summary: Update a slide (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SlideUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Slide"
+    delete:
+      operationId: deleteSlide
+      tags: [slides]
+      summary: Delete a slide (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── NEWS ──────────────────────────────────────────────
+  /news:
+    get:
+      operationId: getNewsList
+      tags: [news]
+      summary: List published news (public)
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsArticle"
+    post:
+      operationId: createNews
+      tags: [news]
+      summary: Create news article (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+
+  /news/all:
+    get:
+      operationId: getAllNews
+      tags: [news]
+      summary: List all news including drafts (admin)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsArticle"
+
+  /news/recent:
+    get:
+      operationId: getRecentNews
+      tags: [news]
+      summary: Get 3 most recent published news articles (home page)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsArticle"
+
+  /news/{slug}:
+    get:
+      operationId: getNewsBySlug
+      tags: [news]
+      summary: Get single news article by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+        "404":
+          description: Not found
+
+  /news/{id}/update:
+    patch:
+      operationId: updateNews
+      tags: [news]
+      summary: Update news article (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+
+  /news/{id}/delete:
+    delete:
+      operationId: deleteNews
+      tags: [news]
+      summary: Delete news article (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── EVENTS ──────────────────────────────────────────────
+  /events:
+    get:
+      operationId: getEvents
+      tags: [events]
+      summary: List upcoming events (public)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+    post:
+      operationId: createEvent
+      tags: [events]
+      summary: Create event (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+
+  /events/all:
+    get:
+      operationId: getAllEvents
+      tags: [events]
+      summary: List all events (admin)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+
+  /events/homepage:
+    get:
+      operationId: getHomepageEvents
+      tags: [events]
+      summary: Get events flagged for homepage display
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
+
+  /events/{id}:
+    get:
+      operationId: getEvent
+      tags: [events]
+      summary: Get single event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+    patch:
+      operationId: updateEvent
+      tags: [events]
+      summary: Update event (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+    delete:
+      operationId: deleteEvent
+      tags: [events]
+      summary: Delete event (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── GALLERY ALBUMS ──────────────────────────────────────
+  /gallery/albums:
+    get:
+      operationId: getAlbums
+      tags: [gallery]
+      summary: List visible gallery albums (public)
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryAlbum"
+    post:
+      operationId: createAlbum
+      tags: [gallery]
+      summary: Create gallery album (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AlbumInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryAlbum"
+
+  /gallery/albums/all:
+    get:
+      operationId: getAllAlbums
+      tags: [gallery]
+      summary: List all albums including hidden (admin)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryAlbum"
+
+  /gallery/albums/{id}:
+    get:
+      operationId: getAlbum
+      tags: [gallery]
+      summary: Get album with items
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryAlbumWithItems"
+    patch:
+      operationId: updateAlbum
+      tags: [gallery]
+      summary: Update album (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AlbumUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryAlbum"
+    delete:
+      operationId: deleteAlbum
+      tags: [gallery]
+      summary: Delete album (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /gallery/albums/{albumId}/items:
+    post:
+      operationId: createGalleryItem
+      tags: [gallery]
+      summary: Add media item to album (admin)
+      parameters:
+        - name: albumId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GalleryItemInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryItem"
+
+  /gallery/items/{id}:
+    patch:
+      operationId: updateGalleryItem
+      tags: [gallery]
+      summary: Update gallery item (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GalleryItemUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryItem"
+    delete:
+      operationId: deleteGalleryItem
+      tags: [gallery]
+      summary: Delete gallery item (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /gallery/preview:
+    get:
+      operationId: getGalleryPreview
+      tags: [gallery]
+      summary: Get latest 6 gallery items for homepage teaser
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryItem"
+
+  # ── STAFF ──────────────────────────────────────────────
+  /staff:
+    get:
+      operationId: getStaff
+      tags: [staff]
+      summary: List active staff members (public)
+      parameters:
+        - name: department
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StaffMember"
+    post:
+      operationId: createStaff
+      tags: [staff]
+      summary: Create staff member (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StaffInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StaffMember"
+
+  /staff/all:
+    get:
+      operationId: getAllStaff
+      tags: [staff]
+      summary: List all staff including inactive (admin)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StaffMember"
+
+  /staff/{id}:
+    patch:
+      operationId: updateStaff
+      tags: [staff]
+      summary: Update staff member (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StaffUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StaffMember"
+    delete:
+      operationId: deleteStaff
+      tags: [staff]
+      summary: Delete staff member (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── CLASSES ──────────────────────────────────────────────
+  /classes:
+    get:
+      operationId: getClasses
+      tags: [classes]
+      summary: List all classes (public)
+      parameters:
+        - name: division
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SchoolClass"
+    post:
+      operationId: createClass
+      tags: [classes]
+      summary: Create class profile (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClassInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SchoolClass"
+
+  /classes/{id}:
+    get:
+      operationId: getClass
+      tags: [classes]
+      summary: Get class by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SchoolClass"
+    patch:
+      operationId: updateClass
+      tags: [classes]
+      summary: Update class (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClassUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SchoolClass"
+
+  # ── DOWNLOADS ──────────────────────────────────────────
+  /downloads:
+    get:
+      operationId: getDownloads
+      tags: [downloads]
+      summary: List active downloads (public)
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: audience
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Download"
+    post:
+      operationId: createDownload
+      tags: [downloads]
+      summary: Create download resource (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DownloadInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Download"
+
+  /downloads/all:
+    get:
+      operationId: getAllDownloads
+      tags: [downloads]
+      summary: List all downloads (admin)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Download"
+
+  /downloads/{id}:
+    patch:
+      operationId: updateDownload
+      tags: [downloads]
+      summary: Update download (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DownloadUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Download"
+    delete:
+      operationId: deleteDownload
+      tags: [downloads]
+      summary: Delete download (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── CONTACT ──────────────────────────────────────────────
+  /contact:
+    post:
+      operationId: submitContact
+      tags: [contact]
+      summary: Submit contact form message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactMessageInput"
+      responses:
+        "201":
+          description: Message received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactMessage"
+
+  /contact/messages:
+    get:
+      operationId: getContactMessages
+      tags: [contact]
+      summary: List all contact messages (admin)
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContactMessage"
+
+  /contact/messages/{id}:
+    patch:
+      operationId: updateContactMessage
+      tags: [contact]
+      summary: Update message status (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactMessageUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactMessage"
+    delete:
+      operationId: deleteContactMessage
+      tags: [contact]
+      summary: Delete contact message (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  # ── ADMIN AUTH ──────────────────────────────────────────
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Admin login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAuthResult"
+        "401":
+          description: Invalid credentials
+
+  /admin/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin]
+      summary: Admin logout
+      responses:
+        "200":
+          description: OK
+
+  /admin/me:
+    get:
+      operationId: getAdminMe
+      tags: [admin]
+      summary: Get current admin user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          description: Unauthorized
+
+  /admin/users:
+    get:
+      operationId: getAdminUsers
+      tags: [admin]
+      summary: List admin users (super admin only)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminUser"
+    post:
+      operationId: createAdminUser
+      tags: [admin]
+      summary: Create admin user (super admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminUserInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+
+  /admin/users/{id}:
+    patch:
+      operationId: updateAdminUser
+      tags: [admin]
+      summary: Update admin user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminUserUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+    delete:
+      operationId: deleteAdminUser
+      tags: [admin]
+      summary: Delete admin user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /admin/activity:
+    get:
+      operationId: getActivityLog
+      tags: [admin]
+      summary: Get admin activity log
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityLogEntry"
+
+  # ── SETTINGS ──────────────────────────────────────────
+  /settings:
+    get:
+      operationId: getSettings
+      tags: [settings]
+      summary: Get all site settings (public)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Setting"
+
+  /settings/map:
+    get:
+      operationId: getSettingsMap
+      tags: [settings]
+      summary: Get settings as key/value map (public)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsMap"
+
+  /settings/{key}:
+    put:
+      operationId: upsertSetting
+      tags: [settings]
+      summary: Set a setting value (admin)
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Setting"
+
+  /settings/bulk:
+    post:
+      operationId: bulkUpdateSettings
+      tags: [settings]
+      summary: Bulk update multiple settings (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsBulkInput"
+      responses:
+        "200":
+          description: OK
+
+  # ── DASHBOARD ──────────────────────────────────────────
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get admin dashboard statistics
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /dashboard/overview:
+    get:
+      operationId: getDashboardOverview
+      tags: [dashboard]
+      summary: Get recent activity and quick metrics for dashboard
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardOverview"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    # ── SLIDES ──────────────────────────────────────────────
+    Slide:
+      type: object
+      required: [id, headingFr, imageUrl, orderIndex, isActive, createdAt]
+      properties:
+        id:            { type: string }
+        imageUrl:      { type: string }
+        headingFr:     { type: string }
+        headingEn:     { type: ["string", "null"] }
+        subtextFr:     { type: ["string", "null"] }
+        subtextEn:     { type: ["string", "null"] }
+        cta1Text:      { type: ["string", "null"] }
+        cta1Url:       { type: ["string", "null"] }
+        cta2Text:      { type: ["string", "null"] }
+        cta2Url:       { type: ["string", "null"] }
+        orderIndex:    { type: integer }
+        isActive:      { type: boolean }
+        createdAt:     { type: string }
+        updatedAt:     { type: string }
+
+    SlideInput:
+      type: object
+      required: [headingFr, imageUrl]
+      properties:
+        imageUrl:   { type: string }
+        headingFr:  { type: string }
+        headingEn:  { type: string }
+        subtextFr:  { type: string }
+        subtextEn:  { type: string }
+        cta1Text:   { type: string }
+        cta1Url:    { type: string }
+        cta2Text:   { type: string }
+        cta2Url:    { type: string }
+        orderIndex: { type: integer }
+        isActive:   { type: boolean }
+
+    SlideUpdate:
+      type: object
+      properties:
+        imageUrl:   { type: string }
+        headingFr:  { type: string }
+        headingEn:  { type: string }
+        subtextFr:  { type: string }
+        subtextEn:  { type: string }
+        cta1Text:   { type: string }
+        cta1Url:    { type: string }
+        cta2Text:   { type: string }
+        cta2Url:    { type: string }
+        orderIndex: { type: integer }
+        isActive:   { type: boolean }
+
+    # ── NEWS ──────────────────────────────────────────────
+    NewsArticle:
+      type: object
+      required: [id, titleFr, slug, excerptFr, bodyFr, author, status, createdAt]
+      properties:
+        id:            { type: string }
+        slug:          { type: string }
+        titleFr:       { type: string }
+        titleEn:       { type: ["string", "null"] }
+        excerptFr:     { type: string }
+        excerptEn:     { type: ["string", "null"] }
+        bodyFr:        { type: string }
+        bodyEn:        { type: ["string", "null"] }
+        featuredImage: { type: ["string", "null"] }
+        category:      { type: ["string", "null"] }
+        author:        { type: string }
+        tags:
+          type: array
+          items: { type: string }
+        status:        { type: string }
+        publishedAt:   { type: ["string", "null"] }
+        createdAt:     { type: string }
+        updatedAt:     { type: string }
+
+    NewsInput:
+      type: object
+      required: [titleFr, excerptFr, bodyFr, author]
+      properties:
+        titleFr:       { type: string }
+        titleEn:       { type: string }
+        excerptFr:     { type: string }
+        excerptEn:     { type: string }
+        bodyFr:        { type: string }
+        bodyEn:        { type: string }
+        featuredImage: { type: string }
+        category:      { type: string }
+        author:        { type: string }
+        tags:
+          type: array
+          items: { type: string }
+        status:        { type: string }
+        publishedAt:   { type: string }
+
+    NewsUpdate:
+      type: object
+      properties:
+        titleFr:       { type: string }
+        titleEn:       { type: string }
+        excerptFr:     { type: string }
+        excerptEn:     { type: string }
+        bodyFr:        { type: string }
+        bodyEn:        { type: string }
+        featuredImage: { type: string }
+        category:      { type: string }
+        author:        { type: string }
+        tags:
+          type: array
+          items: { type: string }
+        status:        { type: string }
+        publishedAt:   { type: string }
+
+    # ── EVENTS ──────────────────────────────────────────────
+    Event:
+      type: object
+      required: [id, titleFr, eventType, startDatetime, locationFr, status, createdAt]
+      properties:
+        id:             { type: string }
+        titleFr:        { type: string }
+        titleEn:        { type: ["string", "null"] }
+        eventType:      { type: string }
+        startDatetime:  { type: string }
+        endDatetime:    { type: ["string", "null"] }
+        locationFr:     { type: string }
+        locationEn:     { type: ["string", "null"] }
+        descriptionFr:  { type: ["string", "null"] }
+        descriptionEn:  { type: ["string", "null"] }
+        featuredImage:  { type: ["string", "null"] }
+        audience:
+          type: array
+          items: { type: string }
+        status:         { type: string }
+        showOnHomepage: { type: boolean }
+        createdAt:      { type: string }
+        updatedAt:      { type: string }
+
+    EventInput:
+      type: object
+      required: [titleFr, eventType, startDatetime, locationFr, status]
+      properties:
+        titleFr:        { type: string }
+        titleEn:        { type: string }
+        eventType:      { type: string }
+        startDatetime:  { type: string }
+        endDatetime:    { type: string }
+        locationFr:     { type: string }
+        locationEn:     { type: string }
+        descriptionFr:  { type: string }
+        descriptionEn:  { type: string }
+        featuredImage:  { type: string }
+        audience:
+          type: array
+          items: { type: string }
+        status:         { type: string }
+        showOnHomepage: { type: boolean }
+
+    EventUpdate:
+      type: object
+      properties:
+        titleFr:        { type: string }
+        titleEn:        { type: string }
+        eventType:      { type: string }
+        startDatetime:  { type: string }
+        endDatetime:    { type: string }
+        locationFr:     { type: string }
+        locationEn:     { type: string }
+        descriptionFr:  { type: string }
+        descriptionEn:  { type: string }
+        featuredImage:  { type: string }
+        audience:
+          type: array
+          items: { type: string }
+        status:         { type: string }
+        showOnHomepage: { type: boolean }
+
+    # ── GALLERY ──────────────────────────────────────────────
+    GalleryAlbum:
+      type: object
+      required: [id, nameFr, category, eventDate, isVisible, createdAt]
+      properties:
+        id:           { type: string }
+        nameFr:       { type: string }
+        nameEn:       { type: ["string", "null"] }
+        coverImage:   { type: ["string", "null"] }
+        descriptionFr: { type: ["string", "null"] }
+        descriptionEn: { type: ["string", "null"] }
+        category:     { type: string }
+        eventDate:    { type: string }
+        isVisible:    { type: boolean }
+        itemCount:    { type: integer }
+        createdAt:    { type: string }
+        updatedAt:    { type: string }
+
+    GalleryAlbumWithItems:
+      type: object
+      required: [id, nameFr, category, eventDate, isVisible, createdAt, items]
+      properties:
+        id:           { type: string }
+        nameFr:       { type: string }
+        nameEn:       { type: ["string", "null"] }
+        coverImage:   { type: ["string", "null"] }
+        descriptionFr: { type: ["string", "null"] }
+        descriptionEn: { type: ["string", "null"] }
+        category:     { type: string }
+        eventDate:    { type: string }
+        isVisible:    { type: boolean }
+        itemCount:    { type: integer }
+        createdAt:    { type: string }
+        updatedAt:    { type: string }
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/GalleryItem"
+
+    AlbumInput:
+      type: object
+      required: [nameFr, category, eventDate]
+      properties:
+        nameFr:       { type: string }
+        nameEn:       { type: string }
+        coverImage:   { type: string }
+        descriptionFr: { type: string }
+        descriptionEn: { type: string }
+        category:     { type: string }
+        eventDate:    { type: string }
+        isVisible:    { type: boolean }
+
+    AlbumUpdate:
+      type: object
+      properties:
+        nameFr:       { type: string }
+        nameEn:       { type: string }
+        coverImage:   { type: string }
+        descriptionFr: { type: string }
+        descriptionEn: { type: string }
+        category:     { type: string }
+        eventDate:    { type: string }
+        isVisible:    { type: boolean }
+
+    GalleryItem:
+      type: object
+      required: [id, albumId, mediaUrl, mediaType, orderIndex, createdAt]
+      properties:
+        id:          { type: string }
+        albumId:     { type: string }
+        mediaUrl:    { type: string }
+        mediaType:   { type: string }
+        captionFr:   { type: ["string", "null"] }
+        captionEn:   { type: ["string", "null"] }
+        altText:     { type: ["string", "null"] }
+        orderIndex:  { type: integer }
+        createdAt:   { type: string }
+
+    GalleryItemInput:
+      type: object
+      required: [mediaUrl, mediaType]
+      properties:
+        mediaUrl:  { type: string }
+        mediaType: { type: string }
+        captionFr: { type: string }
+        captionEn: { type: string }
+        altText:   { type: string }
+        orderIndex: { type: integer }
+
+    GalleryItemUpdate:
+      type: object
+      properties:
+        mediaUrl:  { type: string }
+        captionFr: { type: string }
+        captionEn: { type: string }
+        altText:   { type: string }
+        orderIndex: { type: integer }
+
+    # ── STAFF ──────────────────────────────────────────────
+    StaffMember:
+      type: object
+      required: [id, fullName, roleFr, department, isActive, orderIndex, createdAt]
+      properties:
+        id:             { type: string }
+        fullName:       { type: string }
+        roleFr:         { type: string }
+        roleEn:         { type: ["string", "null"] }
+        department:     { type: string }
+        photoUrl:       { type: ["string", "null"] }
+        bioFr:          { type: ["string", "null"] }
+        bioEn:          { type: ["string", "null"] }
+        email:          { type: ["string", "null"] }
+        qualifications: { type: ["string", "null"] }
+        classesTaught:
+          type: array
+          items: { type: string }
+        orderIndex:     { type: integer }
+        isActive:       { type: boolean }
+        createdAt:      { type: string }
+        updatedAt:      { type: string }
+
+    StaffInput:
+      type: object
+      required: [fullName, roleFr, department]
+      properties:
+        fullName:       { type: string }
+        roleFr:         { type: string }
+        roleEn:         { type: string }
+        department:     { type: string }
+        photoUrl:       { type: string }
+        bioFr:          { type: string }
+        bioEn:          { type: string }
+        email:          { type: string }
+        qualifications: { type: string }
+        classesTaught:
+          type: array
+          items: { type: string }
+        orderIndex:     { type: integer }
+        isActive:       { type: boolean }
+
+    StaffUpdate:
+      type: object
+      properties:
+        fullName:       { type: string }
+        roleFr:         { type: string }
+        roleEn:         { type: string }
+        department:     { type: string }
+        photoUrl:       { type: string }
+        bioFr:          { type: string }
+        bioEn:          { type: string }
+        email:          { type: string }
+        qualifications: { type: string }
+        classesTaught:
+          type: array
+          items: { type: string }
+        orderIndex:     { type: integer }
+        isActive:       { type: boolean }
+
+    # ── CLASSES ──────────────────────────────────────────────
+    SchoolClass:
+      type: object
+      required: [id, classCode, division, studentCount, showOnWebsite, createdAt]
+      properties:
+        id:            { type: string }
+        classCode:     { type: string }
+        division:      { type: string }
+        teacherId:     { type: ["string", "null"] }
+        teacherName:   { type: ["string", "null"] }
+        assistantId:   { type: ["string", "null"] }
+        assistantName: { type: ["string", "null"] }
+        descFr:        { type: ["string", "null"] }
+        descEn:        { type: ["string", "null"] }
+        photoUrl:      { type: ["string", "null"] }
+        studentCount:  { type: integer }
+        timetableUrl:  { type: ["string", "null"] }
+        showOnWebsite: { type: boolean }
+        createdAt:     { type: string }
+        updatedAt:     { type: string }
+
+    ClassInput:
+      type: object
+      required: [classCode, division, studentCount]
+      properties:
+        classCode:     { type: string }
+        division:      { type: string }
+        teacherId:     { type: string }
+        assistantId:   { type: string }
+        descFr:        { type: string }
+        descEn:        { type: string }
+        photoUrl:      { type: string }
+        studentCount:  { type: integer }
+        timetableUrl:  { type: string }
+        showOnWebsite: { type: boolean }
+
+    ClassUpdate:
+      type: object
+      properties:
+        classCode:     { type: string }
+        division:      { type: string }
+        teacherId:     { type: string }
+        assistantId:   { type: string }
+        descFr:        { type: string }
+        descEn:        { type: string }
+        photoUrl:      { type: string }
+        studentCount:  { type: integer }
+        timetableUrl:  { type: string }
+        showOnWebsite: { type: boolean }
+
+    # ── DOWNLOADS ──────────────────────────────────────────
+    Download:
+      type: object
+      required: [id, titleFr, fileUrl, category, audience, publishDate, isActive, createdAt]
+      properties:
+        id:          { type: string }
+        titleFr:     { type: string }
+        titleEn:     { type: ["string", "null"] }
+        fileUrl:     { type: string }
+        fileType:    { type: ["string", "null"] }
+        category:    { type: string }
+        audience:
+          type: array
+          items: { type: string }
+        publishDate: { type: string }
+        isActive:    { type: boolean }
+        createdAt:   { type: string }
+        updatedAt:   { type: string }
+
+    DownloadInput:
+      type: object
+      required: [titleFr, fileUrl, category, audience, publishDate]
+      properties:
+        titleFr:     { type: string }
+        titleEn:     { type: string }
+        fileUrl:     { type: string }
+        fileType:    { type: string }
+        category:    { type: string }
+        audience:
+          type: array
+          items: { type: string }
+        publishDate: { type: string }
+        isActive:    { type: boolean }
+
+    DownloadUpdate:
+      type: object
+      properties:
+        titleFr:     { type: string }
+        titleEn:     { type: string }
+        fileUrl:     { type: string }
+        fileType:    { type: string }
+        category:    { type: string }
+        audience:
+          type: array
+          items: { type: string }
+        publishDate: { type: string }
+        isActive:    { type: boolean }
+
+    # ── CONTACT ──────────────────────────────────────────────
+    ContactMessage:
+      type: object
+      required: [id, senderName, senderEmail, message, isRead, createdAt]
+      properties:
+        id:          { type: string }
+        senderName:  { type: string }
+        senderEmail: { type: string }
+        subject:     { type: ["string", "null"] }
+        message:     { type: string }
+        isRead:      { type: boolean }
+        repliedAt:   { type: ["string", "null"] }
+        createdAt:   { type: string }
+
+    ContactMessageInput:
+      type: object
+      required: [senderName, senderEmail, message]
+      properties:
+        senderName:  { type: string }
+        senderEmail: { type: string }
+        subject:     { type: string }
+        message:     { type: string }
+
+    ContactMessageUpdate:
+      type: object
+      properties:
+        isRead:     { type: boolean }
+        repliedAt:  { type: string }
+
+    # ── ADMIN ──────────────────────────────────────────────
+    AdminLoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:    { type: string }
+        password: { type: string }
+
+    AdminAuthResult:
+      type: object
+      required: [token, user]
+      properties:
+        token: { type: string }
+        user:
+          $ref: "#/components/schemas/AdminUser"
+
+    AdminUser:
+      type: object
+      required: [id, name, email, role, isActive, createdAt]
+      properties:
+        id:        { type: string }
+        name:      { type: string }
+        email:     { type: string }
+        role:      { type: string }
+        lastLogin: { type: ["string", "null"] }
+        isActive:  { type: boolean }
+        createdAt: { type: string }
+
+    AdminUserInput:
+      type: object
+      required: [name, email, password, role]
+      properties:
+        name:     { type: string }
+        email:    { type: string }
+        password: { type: string }
+        role:     { type: string }
+
+    AdminUserUpdate:
+      type: object
+      properties:
+        name:     { type: string }
+        email:    { type: string }
+        password: { type: string }
+        role:     { type: string }
+        isActive: { type: boolean }
+
+    ActivityLogEntry:
+      type: object
+      required: [id, action, entityType, createdAt]
+      properties:
+        id:          { type: string }
+        adminId:     { type: ["string", "null"] }
+        adminName:   { type: ["string", "null"] }
+        action:      { type: string }
+        entityType:  { type: string }
+        entityId:    { type: ["string", "null"] }
+        description: { type: ["string", "null"] }
+        createdAt:   { type: string }
+
+    # ── SETTINGS ──────────────────────────────────────────
+    Setting:
+      type: object
+      required: [id, key, value, updatedAt]
+      properties:
+        id:        { type: string }
+        key:       { type: string }
+        value:     { type: string }
+        updatedAt: { type: string }
+
+    SettingsMap:
+      type: object
+      additionalProperties: { type: string }
+
+    SettingInput:
+      type: object
+      required: [value]
+      properties:
+        value: { type: string }
+
+    SettingsBulkInput:
+      type: object
+      required: [settings]
+      properties:
+        settings:
+          type: array
+          items:
+            type: object
+            required: [key, value]
+            properties:
+              key:   { type: string }
+              value: { type: string }
+
+    # ── DASHBOARD ──────────────────────────────────────────
+    DashboardStats:
+      type: object
+      required: [totalStudents, totalClasses, totalStaff, totalNews, totalEvents, totalAlbums, pendingMessages, totalDownloads]
+      properties:
+        totalStudents:    { type: integer }
+        totalClasses:     { type: integer }
+        totalStaff:       { type: integer }
+        totalNews:        { type: integer }
+        totalEvents:      { type: integer }
+        totalAlbums:      { type: integer }
+        pendingMessages:  { type: integer }
+        totalDownloads:   { type: integer }
+
+    DashboardOverview:
+      type: object
+      required: [stats, recentNews, upcomingEvents, recentActivity]
+      properties:
+        stats:
+          $ref: "#/components/schemas/DashboardStats"
+        recentNews:
+          type: array
+          items:
+            $ref: "#/components/schemas/NewsArticle"
+        upcomingEvents:
+          type: array
+          items:
+            $ref: "#/components/schemas/Event"
+        recentActivity:
+          type: array
+          items:
+            $ref: "#/components/schemas/ActivityLogEntry"

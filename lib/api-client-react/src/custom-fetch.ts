@@ -44,6 +44,14 @@ export function setAuthTokenGetter(getter: AuthTokenGetter | null): void {
   _authTokenGetter = getter;
 }
 
+// Automatically set up the token getter for Ecole Saint Hannibal admin auth
+setAuthTokenGetter(() => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("esh_admin_token");
+  }
+  return null;
+});
+
 function isRequest(input: RequestInfo | URL): input is Request {
   return typeof Request !== "undefined" && input instanceof Request;
 }

@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+:root {
+  /* Royal Blue #1A5276 = hsl(209, 64%, 28%) */
+  --background: 0 0% 100%;
+  --foreground: 213 30% 14%;
+  --card: 0 0% 100%;
+  --card-foreground: 213 30% 14%;
+  --card-border: 213 20% 88%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 213 30% 14%;
+  --popover-border: 213 20% 88%;
+
+  /* Primary: Royal Blue */
+  --primary: 209 64% 28%;
+  --primary-foreground: 0 0% 100%;
+  --primary-border: hsl(209, 64%, 22%);
+
+  /* Secondary: Light Blue */
+  --secondary: 209 50% 96%;
+  --secondary-foreground: 209 64% 28%;
+  --secondary-border: hsl(209, 30%, 85%);
+
+  /* Muted */
+  --muted: 210 20% 96%;
+  --muted-foreground: 210 15% 46%;
+  --muted-border: hsl(210, 20%, 88%);
+
+  /* Accent: Gold #F4D03F = hsl(49, 87%, 60%) */
+  --accent: 49 87% 60%;
+  --accent-foreground: 213 30% 14%;
+  --accent-border: hsl(49, 87%, 50%);
+
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --destructive-border: hsl(0, 72%, 43%);
+
+  --border: 213 20% 88%;
+  --input: 213 20% 88%;
+  --ring: 209 64% 28%;
+
+  --sidebar: 209 64% 24%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-border: 209 64% 20%;
+  --sidebar-primary: 49 87% 60%;
+  --sidebar-primary-foreground: 213 30% 14%;
+  --sidebar-accent: 209 64% 32%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-ring: 49 87% 60%;
+
+  --radius: 0.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+}
+
+/* School brand utilities */
+.esh-blue { color: hsl(209, 64%, 28%); }
+.esh-gold { color: hsl(49, 87%, 55%); }
+.esh-bg-blue { background-color: hsl(209, 64%, 28%); }
+.esh-bg-gold { background-color: hsl(49, 87%, 60%); }
+.esh-bg-light { background-color: hsl(209, 50%, 96%); }
+
+/* Fade-in-up animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Section padding */
+.section-py {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+/* Gold underline for headings */
+.heading-underline {
+  position: relative;
+  display: inline-block;
+}
+.heading-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 48px;
+  height: 3px;
+  background-color: hsl(49, 87%, 60%);
+  border-radius: 2px;
+}
+.heading-underline-center::after {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Prose overrides for news body */
+.prose h1, .prose h2, .prose h3 {
+  font-family: var(--font-serif);
+  color: hsl(209, 64%, 28%);
+}
