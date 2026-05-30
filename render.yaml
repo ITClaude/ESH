@@ -1,0 +1,54 @@
+databases:
+  - name: esh-db
+    plan: free
+    databaseName: ecolesainthannibal
+    user: esh_admin
+
+services:
+  # ── API Server ──────────────────────────────────────────────────────────────
+  - type: web
+    name: esh-api
+    runtime: node
+    plan: free
+    rootDir: .
+    buildCommand: >
+      corepack enable &&
+      pnpm install --frozen-lockfile &&
+      pnpm --filter @workspace/api-server run build
+    startCommand: node --enable-source-maps artifacts/api-server/dist/index.mjs
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: esh-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false  # Fill in your frontend URL after first deploy (e.g. https://esh-site.onrender.com)
+
+  # ── Frontend Static Site ────────────────────────────────────────────────────
+  - type: web
+    name: esh-frontend
+    runtime: static
+    plan: free
+    rootDir: .
+    buildCommand: >
+      corepack enable &&
+      pnpm install --frozen-lockfile &&
+      BASE_PATH=/ pnpm --filter @workspace/school-website run build
+    staticPublishPath: artifacts/school-website/dist/public
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false  # Fill in your API service URL (e.g. https://esh-api.onrender.com)

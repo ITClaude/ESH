@@ -6,6 +6,8 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+const frontendUrl = process.env.FRONTEND_URL;
+
 app.use(
   pinoHttp({
     logger,
@@ -25,7 +27,16 @@ app.use(
     },
   }),
 );
-app.use(cors());
+
+app.use(
+  cors({
+    origin: frontendUrl
+      ? [frontendUrl]
+      : true,
+    credentials: true,
+  }),
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
