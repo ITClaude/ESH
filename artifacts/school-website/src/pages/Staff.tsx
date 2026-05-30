@@ -13,7 +13,7 @@ export default function StaffPage() {
 
   return (
     <PublicLayout>
-      <div className="bg-[hsl(var(--primary))] text-white py-16 px-4">
+      <div className="bg-[hsl(var(--primary))] text-white py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="font-serif text-4xl font-bold">{lang === "fr" ? "Notre Personnel" : "Our Staff"}</h1>
           <p className="text-white/70 mt-2">{lang === "fr" ? "Une équipe dédiée à l'excellence éducative" : "A team dedicated to educational excellence"}</p>

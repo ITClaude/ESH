@@ -88,7 +88,7 @@ function HeroSlider({ slides }: { slides: any[] }) {
 
   if (slides.length === 0) {
     return (
-      <div className="relative h-[70vh] min-h-[500px] bg-gradient-to-br from-[hsl(209,64%,28%)] to-[hsl(209,64%,18%)] flex items-center justify-center">
+      <div className="relative h-[55vh] sm:h-[70vh] min-h-[360px] sm:min-h-[500px] bg-gradient-to-br from-[hsl(209,64%,28%)] to-[hsl(209,64%,18%)] flex items-center justify-center">
         <div className="text-center text-white px-4">
           <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4">Ecole Saint Hannibal</h1>
           <p className="text-xl text-white/80 mb-8">Excellence, Intégrité, Compassion</p>
@@ -105,7 +105,7 @@ function HeroSlider({ slides }: { slides: any[] }) {
 
   return (
     <div
-      className="relative h-[70vh] min-h-[500px] overflow-hidden"
+      className="relative h-[55vh] sm:h-[70vh] min-h-[360px] sm:min-h-[500px] overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       data-testid="hero-slider"
@@ -122,7 +122,7 @@ function HeroSlider({ slides }: { slides: any[] }) {
 
       {/* Content */}
       <div className="relative z-10 h-full flex items-center">
-        <div className="max-w-7xl mx-auto px-6 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
           <motion.div
             key={current}
             initial={{ opacity: 0, y: 20 }}
@@ -130,11 +130,11 @@ function HeroSlider({ slides }: { slides: any[] }) {
             transition={{ duration: 0.5 }}
             className="max-w-2xl"
           >
-            <h1 className="font-serif text-3xl md:text-5xl font-bold text-white leading-tight mb-4">
+            <h1 className="font-serif text-2xl sm:text-3xl md:text-5xl font-bold text-white leading-tight mb-4">
               {t(slide.headingFr, slide.headingEn)}
             </h1>
             {(slide.subtextFr || slide.subtextEn) && (
-              <p className="text-lg text-white/85 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg text-white/85 mb-6 sm:mb-8 leading-relaxed">
                 {t(slide.subtextFr, slide.subtextEn)}
               </p>
             )}
@@ -204,7 +204,7 @@ export default function Home() {
       {s.directorMessageFr && (
         <section className="section-py bg-white">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
                 <div className="relative">
                   <div className="w-full max-w-sm mx-auto aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-b from-[hsl(209,50%,96%)] to-[hsl(209,64%,85%)] flex items-center justify-center">
@@ -239,12 +239,12 @@ export default function Home() {
       {/* Latest News */}
       <section className="section-py bg-[hsl(210,20%,98%)]">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-end justify-between mb-10">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end justify-between mb-8 sm:mb-10">
             <div>
               <p className="text-sm font-semibold text-[hsl(49,87%,50%)] uppercase tracking-widest mb-2">{lang === "fr" ? "Actualités" : "News"}</p>
-              <h2 className="font-serif text-3xl font-bold text-[hsl(var(--primary))] heading-underline">{lang === "fr" ? "Dernières Nouvelles" : "Latest News"}</h2>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[hsl(var(--primary))] heading-underline">{lang === "fr" ? "Dernières Nouvelles" : "Latest News"}</h2>
             </div>
-            <Link href="/news" className="flex items-center gap-2 text-sm text-[hsl(var(--primary))] font-medium hover:gap-3 transition-all" data-testid="link-all-news">
+            <Link href="/news" className="flex items-center gap-2 text-sm text-[hsl(var(--primary))] font-medium hover:gap-3 transition-all self-start sm:self-auto" data-testid="link-all-news">
               {lang === "fr" ? "Toutes les actualités" : "All news"} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -279,12 +279,12 @@ export default function Home() {
       {/* Upcoming Events */}
       <section className="section-py bg-[hsl(var(--primary))]">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-end justify-between mb-10">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end justify-between mb-8 sm:mb-10">
             <div>
               <p className="text-sm font-semibold text-[hsl(49,87%,60%)] uppercase tracking-widest mb-2">{lang === "fr" ? "Agenda" : "Calendar"}</p>
-              <h2 className="font-serif text-3xl font-bold text-white">{lang === "fr" ? "Prochains Événements" : "Upcoming Events"}</h2>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white">{lang === "fr" ? "Prochains Événements" : "Upcoming Events"}</h2>
             </div>
-            <Link href="/events" className="flex items-center gap-2 text-sm text-white/80 hover:text-white font-medium" data-testid="link-all-events">
+            <Link href="/events" className="flex items-center gap-2 text-sm text-white/80 hover:text-white font-medium self-start sm:self-auto" data-testid="link-all-events">
               {lang === "fr" ? "Voir tous" : "See all"} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -352,12 +352,12 @@ export default function Home() {
       {galleryList.length > 0 && (
         <section className="section-py bg-[hsl(210,20%,98%)]">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="flex items-end justify-between mb-10">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end justify-between mb-8 sm:mb-10">
               <div>
                 <p className="text-sm font-semibold text-[hsl(49,87%,50%)] uppercase tracking-widest mb-2">{lang === "fr" ? "Galerie" : "Gallery"}</p>
-                <h2 className="font-serif text-3xl font-bold text-[hsl(var(--primary))] heading-underline">{lang === "fr" ? "La Vie à l'ESH" : "Life at ESH"}</h2>
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[hsl(var(--primary))] heading-underline">{lang === "fr" ? "La Vie à l'ESH" : "Life at ESH"}</h2>
               </div>
-              <Link href="/gallery" className="flex items-center gap-2 text-sm text-[hsl(var(--primary))] font-medium" data-testid="link-gallery">
+              <Link href="/gallery" className="flex items-center gap-2 text-sm text-[hsl(var(--primary))] font-medium self-start sm:self-auto" data-testid="link-gallery">
                 {lang === "fr" ? "Voir la galerie" : "View gallery"} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

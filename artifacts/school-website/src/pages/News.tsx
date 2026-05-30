@@ -25,19 +25,19 @@ export default function NewsPage() {
   return (
     <PublicLayout>
       {/* Header */}
-      <div className="bg-[hsl(var(--primary))] text-white py-16 px-4">
+      <div className="bg-[hsl(var(--primary))] text-white py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <p className="text-sm font-semibold text-[hsl(49,87%,60%)] uppercase tracking-widest mb-2">{lang === "fr" ? "Vie Scolaire" : "School Life"}</p>
-          <h1 className="font-serif text-4xl font-bold">{lang === "fr" ? "Actualités" : "News"}</h1>
-          <p className="text-white/70 mt-2">{lang === "fr" ? "Toutes les nouvelles de l'Ecole Saint Hannibal" : "All news from Ecole Saint Hannibal"}</p>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold">{lang === "fr" ? "Actualités" : "News"}</h1>
+          <p className="text-white/70 mt-2 text-sm sm:text-base">{lang === "fr" ? "Toutes les nouvelles de l'Ecole Saint Hannibal" : "All news from Ecole Saint Hannibal"}</p>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-12">
-        {/* Category filter */}
-        <div className="flex gap-2 flex-wrap mb-8">
+        {/* Category filter — horizontal scroll on mobile */}
+        <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap mb-8 no-scrollbar">
           {CATEGORIES.map(c => (
-            <button key={c.value} onClick={() => setCategory(c.value)} className={`px-4 py-2 rounded-full text-sm transition-colors ${category === c.value ? "bg-[hsl(var(--primary))] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]"}`} data-testid={`filter-${c.value || "all"}`}>
+            <button key={c.value} onClick={() => setCategory(c.value)} className={`flex-shrink-0 px-4 py-2 rounded-full text-sm transition-colors whitespace-nowrap ${category === c.value ? "bg-[hsl(var(--primary))] text-white" : "bg-white border border-gray-200 text-gray-600 hover:border-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]"}`} data-testid={`filter-${c.value || "all"}`}>
               {lang === "fr" ? c.labelFr : c.labelEn}
             </button>
           ))}

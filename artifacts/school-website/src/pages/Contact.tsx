@@ -18,7 +18,7 @@ export default function ContactPage() {
 
   return (
     <PublicLayout>
-      <div className="bg-[hsl(var(--primary))] text-white py-16 px-4">
+      <div className="bg-[hsl(var(--primary))] text-white py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <p className="text-sm font-semibold text-[hsl(49,87%,60%)] uppercase tracking-widest mb-2">{lang === "fr" ? "Écrivez-nous" : "Write to us"}</p>
           <h1 className="font-serif text-4xl font-bold">{lang === "fr" ? "Nous Contacter" : "Contact Us"}</h1>

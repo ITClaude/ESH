@@ -13,11 +13,11 @@ export default function GalleryPage() {
 
   return (
     <PublicLayout>
-      <div className="bg-[hsl(var(--primary))] text-white py-16 px-4">
+      <div className="bg-[hsl(var(--primary))] text-white py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <p className="text-sm font-semibold text-[hsl(49,87%,60%)] uppercase tracking-widest mb-2">{lang === "fr" ? "Médiathèque" : "Media Library"}</p>
-          <h1 className="font-serif text-4xl font-bold">{lang === "fr" ? "Galerie Photos" : "Photo Gallery"}</h1>
-          <p className="text-white/70 mt-2">{lang === "fr" ? "Les moments forts de la vie à l'ESH" : "Highlights of life at ESH"}</p>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold">{lang === "fr" ? "Galerie Photos" : "Photo Gallery"}</h1>
+          <p className="text-white/70 mt-2 text-sm sm:text-base">{lang === "fr" ? "Les moments forts de la vie à l'ESH" : "Highlights of life at ESH"}</p>
         </div>
       </div>
 

@@ -23,7 +23,7 @@ export default function AboutPage() {
 
   return (
     <PublicLayout>
-      <div className="bg-[hsl(var(--primary))] text-white py-16 px-4">
+      <div className="bg-[hsl(var(--primary))] text-white py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="font-serif text-4xl font-bold">{lang === "fr" ? "À Propos de l'Ecole Saint Hannibal" : "About Ecole Saint Hannibal"}</h1>
           <p className="text-white/70 mt-2">{lang === "fr" ? "Excellence, Intégrité, Compassion depuis 2008" : "Excellence, Integrity, Compassion since 2008"}</p>

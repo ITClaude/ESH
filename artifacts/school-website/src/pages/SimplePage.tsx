@@ -11,7 +11,7 @@ export function SimplePage({ titleFr, titleEn, children }: SimplePageProps) {
   const { lang } = useLang();
   return (
     <PublicLayout>
-      <div className="bg-[hsl(var(--primary))] text-white py-16 px-4">
+      <div className="bg-[hsl(var(--primary))] text-white py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="font-serif text-4xl font-bold">{lang === "fr" ? titleFr : titleEn}</h1>
         </div>

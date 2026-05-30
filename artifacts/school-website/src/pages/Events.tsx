@@ -22,11 +22,11 @@ export default function EventsPage() {
 
   return (
     <PublicLayout>
-      <div className="bg-[hsl(var(--primary))] text-white py-16 px-4">
+      <div className="bg-[hsl(var(--primary))] text-white py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <p className="text-sm font-semibold text-[hsl(49,87%,60%)] uppercase tracking-widest mb-2">{lang === "fr" ? "Agenda" : "Calendar"}</p>
-          <h1 className="font-serif text-4xl font-bold">{lang === "fr" ? "Événements" : "Events"}</h1>
-          <p className="text-white/70 mt-2">{lang === "fr" ? "Tous les événements de l'Ecole Saint Hannibal" : "All Ecole Saint Hannibal events"}</p>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold">{lang === "fr" ? "Événements" : "Events"}</h1>
+          <p className="text-white/70 mt-2 text-sm sm:text-base">{lang === "fr" ? "Tous les événements de l'Ecole Saint Hannibal" : "All Ecole Saint Hannibal events"}</p>
         </div>
       </div>
 
@@ -55,9 +55,9 @@ export default function EventsPage() {
                         {ev.status !== "upcoming" && <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ev.status === "completed" ? "bg-gray-100 text-gray-600" : "bg-red-100 text-red-700"}`}>{ev.status}</span>}
                       </div>
                       <h2 className="font-serif text-lg font-bold text-gray-900 group-hover:text-[hsl(var(--primary))] transition-colors">{t(ev.titleFr, ev.titleEn)}</h2>
-                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-                        <div className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{t(ev.locationFr, ev.locationEn)}</div>
-                        <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{new Date(ev.startDatetime).toLocaleTimeString("fr-RW", { hour: "2-digit", minute: "2-digit" })}</div>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm text-gray-500">
+                        <div className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 flex-shrink-0" /><span className="truncate max-w-[12rem]">{t(ev.locationFr, ev.locationEn)}</span></div>
+                        <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 flex-shrink-0" />{new Date(ev.startDatetime).toLocaleTimeString("fr-RW", { hour: "2-digit", minute: "2-digit" })}</div>
                       </div>
                     </div>
                   </Link>

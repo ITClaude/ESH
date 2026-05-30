@@ -136,10 +136,16 @@ h1, h2, h3 {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Section padding */
+/* Section padding — compact on mobile, generous on desktop */
 .section-py {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+@media (min-width: 768px) {
+  .section-py {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
 }
 
 /* Gold underline for headings */
@@ -161,6 +167,10 @@ h1, h2, h3 {
   left: 50%;
   transform: translateX(-50%);
 }
+
+/* Hide scrollbar for horizontal-scroll containers */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* Prose overrides for news body */
 .prose h1, .prose h2, .prose h3 {

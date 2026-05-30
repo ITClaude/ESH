@@ -23,7 +23,7 @@ export default function ResourcesPage() {
 
   return (
     <PublicLayout>
-      <div className="bg-[hsl(var(--primary))] text-white py-16 px-4">
+      <div className="bg-[hsl(var(--primary))] text-white py-10 sm:py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <p className="text-sm font-semibold text-[hsl(49,87%,60%)] uppercase tracking-widest mb-2">{lang === "fr" ? "Centre de Documents" : "Document Center"}</p>
           <h1 className="font-serif text-4xl font-bold">{lang === "fr" ? "Ressources & Documents" : "Resources & Documents"}</h1>
