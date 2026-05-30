@@ -115,7 +115,7 @@ router.patch("/gallery/albums/:id", requireAuth, async (req, res) => {
     const fields = ["nameFr","nameEn","coverImage","descriptionFr","descriptionEn","category","eventDate","isVisible"];
     for (const f of fields) { if (req.body[f] !== undefined) updates[f] = req.body[f]; }
     updates.updatedAt = new Date();
-    const [updated] = await db.update(galleryAlbumsTable).set(updates).where(eq(galleryAlbumsTable.id, req.params.id)).returning();
+    const [updated] = await db.update(galleryAlbumsTable).set(updates).where(eq(galleryAlbumsTable.id, req.params["id"] as string)).returning();
     if (!updated) { res.status(404).json({ error: "Not found" }); return; }
     res.json(formatAlbum(updated));
   } catch (err) {
@@ -126,7 +126,7 @@ router.patch("/gallery/albums/:id", requireAuth, async (req, res) => {
 
 router.delete("/gallery/albums/:id", requireAuth, async (req, res) => {
   try {
-    await db.delete(galleryAlbumsTable).where(eq(galleryAlbumsTable.id, req.params.id));
+    await db.delete(galleryAlbumsTable).where(eq(galleryAlbumsTable.id, req.params["id"] as string));
     res.status(204).end();
   } catch (err) {
     req.log.error(err);
@@ -137,7 +137,7 @@ router.delete("/gallery/albums/:id", requireAuth, async (req, res) => {
 router.post("/gallery/albums/:albumId/items", requireAuth, async (req, res) => {
   try {
     const [item] = await db.insert(galleryItemsTable).values({
-      albumId: req.params.albumId,
+      albumId: req.params["albumId"] as string,
       mediaUrl: req.body.mediaUrl,
       mediaType: req.body.mediaType ?? "photo",
       captionFr: req.body.captionFr ?? null,
@@ -157,7 +157,7 @@ router.patch("/gallery/items/:id", requireAuth, async (req, res) => {
     const updates: Record<string, any> = {};
     const fields = ["mediaUrl","captionFr","captionEn","altText","orderIndex"];
     for (const f of fields) { if (req.body[f] !== undefined) updates[f] = req.body[f]; }
-    const [updated] = await db.update(galleryItemsTable).set(updates).where(eq(galleryItemsTable.id, req.params.id)).returning();
+    const [updated] = await db.update(galleryItemsTable).set(updates).where(eq(galleryItemsTable.id, req.params["id"] as string)).returning();
     if (!updated) { res.status(404).json({ error: "Not found" }); return; }
     res.json(formatItem(updated));
   } catch (err) {
@@ -168,7 +168,7 @@ router.patch("/gallery/items/:id", requireAuth, async (req, res) => {
 
 router.delete("/gallery/items/:id", requireAuth, async (req, res) => {
   try {
-    await db.delete(galleryItemsTable).where(eq(galleryItemsTable.id, req.params.id));
+    await db.delete(galleryItemsTable).where(eq(galleryItemsTable.id, req.params["id"] as string));
     res.status(204).end();
   } catch (err) {
     req.log.error(err);

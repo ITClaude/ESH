@@ -124,7 +124,7 @@ router.patch("/news/:id/update", requireAuth, async (req, res) => {
     }
     if (req.body.publishedAt !== undefined) updates.publishedAt = req.body.publishedAt ? new Date(req.body.publishedAt) : null;
     updates.updatedAt = new Date();
-    const [updated] = await db.update(newsTable).set(updates).where(eq(newsTable.id, req.params.id)).returning();
+    const [updated] = await db.update(newsTable).set(updates).where(eq(newsTable.id, req.params["id"] as string)).returning();
     if (!updated) { res.status(404).json({ error: "Not found" }); return; }
     res.json(formatNews(updated));
   } catch (err) {
@@ -135,7 +135,7 @@ router.patch("/news/:id/update", requireAuth, async (req, res) => {
 
 router.delete("/news/:id/delete", requireAuth, async (req, res) => {
   try {
-    await db.delete(newsTable).where(eq(newsTable.id, req.params.id));
+    await db.delete(newsTable).where(eq(newsTable.id, req.params["id"] as string));
     res.status(204).end();
   } catch (err) {
     req.log.error(err);

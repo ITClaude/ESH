@@ -58,7 +58,7 @@ router.patch("/contact/messages/:id", requireAuth, async (req, res) => {
     const updates: Record<string, any> = {};
     if (req.body.isRead !== undefined) updates.isRead = req.body.isRead;
     if (req.body.repliedAt !== undefined) updates.repliedAt = req.body.repliedAt ? new Date(req.body.repliedAt) : null;
-    const [updated] = await db.update(contactMessagesTable).set(updates).where(eq(contactMessagesTable.id, req.params.id)).returning();
+    const [updated] = await db.update(contactMessagesTable).set(updates).where(eq(contactMessagesTable.id, req.params["id"] as string)).returning();
     if (!updated) { res.status(404).json({ error: "Not found" }); return; }
     res.json(formatMessage(updated));
   } catch (err) {
@@ -69,7 +69,7 @@ router.patch("/contact/messages/:id", requireAuth, async (req, res) => {
 
 router.delete("/contact/messages/:id", requireAuth, async (req, res) => {
   try {
-    await db.delete(contactMessagesTable).where(eq(contactMessagesTable.id, req.params.id));
+    await db.delete(contactMessagesTable).where(eq(contactMessagesTable.id, req.params["id"] as string));
     res.status(204).end();
   } catch (err) {
     req.log.error(err);

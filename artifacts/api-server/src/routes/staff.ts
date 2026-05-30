@@ -78,7 +78,7 @@ router.patch("/staff/:id", requireAuth, async (req, res) => {
     const fields = ["fullName","roleFr","roleEn","department","photoUrl","bioFr","bioEn","email","qualifications","classesTaught","orderIndex","isActive"];
     for (const f of fields) { if (req.body[f] !== undefined) updates[f] = req.body[f]; }
     updates.updatedAt = new Date();
-    const [updated] = await db.update(staffTable).set(updates).where(eq(staffTable.id, req.params.id)).returning();
+    const [updated] = await db.update(staffTable).set(updates).where(eq(staffTable.id, req.params["id"] as string)).returning();
     if (!updated) { res.status(404).json({ error: "Not found" }); return; }
     res.json(formatStaff(updated));
   } catch (err) {
@@ -89,7 +89,7 @@ router.patch("/staff/:id", requireAuth, async (req, res) => {
 
 router.delete("/staff/:id", requireAuth, async (req, res) => {
   try {
-    await db.delete(staffTable).where(eq(staffTable.id, req.params.id));
+    await db.delete(staffTable).where(eq(staffTable.id, req.params["id"] as string));
     res.status(204).end();
   } catch (err) {
     req.log.error(err);

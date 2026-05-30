@@ -87,7 +87,7 @@ router.patch("/classes/:id", requireAuth, async (req, res) => {
     const fields = ["classCode","division","teacherId","assistantId","descFr","descEn","photoUrl","studentCount","timetableUrl","showOnWebsite"];
     for (const f of fields) { if (req.body[f] !== undefined) updates[f] = req.body[f]; }
     updates.updatedAt = new Date();
-    const [updated] = await db.update(classesTable).set(updates).where(eq(classesTable.id, req.params.id)).returning();
+    const [updated] = await db.update(classesTable).set(updates).where(eq(classesTable.id, req.params["id"] as string)).returning();
     if (!updated) { res.status(404).json({ error: "Not found" }); return; }
     res.json(await formatClass(updated));
   } catch (err) {

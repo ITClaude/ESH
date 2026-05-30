@@ -39,7 +39,7 @@ router.get("/settings/map", async (req, res) => {
 
 router.put("/settings/:key", requireAuth, async (req, res) => {
   try {
-    const { key } = req.params;
+    const key = req.params["key"] as string;
     const { value } = req.body;
     const existing = await db.select().from(siteSettingsTable).where(eq(siteSettingsTable.key, key));
     let result;

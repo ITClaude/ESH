@@ -105,7 +105,7 @@ router.patch("/admin/users/:id", requireAuth, async (req, res) => {
     if (req.body.role !== undefined) updates.role = req.body.role;
     if (req.body.isActive !== undefined) updates.isActive = req.body.isActive;
     if (req.body.password) updates.passwordHash = await bcrypt.hash(req.body.password, 12);
-    const [updated] = await db.update(adminUsersTable).set(updates).where(eq(adminUsersTable.id, req.params.id)).returning();
+    const [updated] = await db.update(adminUsersTable).set(updates).where(eq(adminUsersTable.id, req.params["id"] as string)).returning();
     if (!updated) { res.status(404).json({ error: "Not found" }); return; }
     res.json(formatUser(updated));
   } catch (err) {
@@ -116,7 +116,7 @@ router.patch("/admin/users/:id", requireAuth, async (req, res) => {
 
 router.delete("/admin/users/:id", requireAuth, async (req, res) => {
   try {
-    await db.delete(adminUsersTable).where(eq(adminUsersTable.id, req.params.id));
+    await db.delete(adminUsersTable).where(eq(adminUsersTable.id, req.params["id"] as string));
     res.status(204).end();
   } catch (err) {
     req.log.error(err);

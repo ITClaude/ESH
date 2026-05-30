@@ -54,7 +54,7 @@ router.post("/slides", requireAuth, async (req, res) => {
 
 router.patch("/slides/:id", requireAuth, async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.params["id"] as string;
     const updates: Record<string, any> = {};
     const fields = ["imageUrl","headingFr","headingEn","subtextFr","subtextEn","cta1Text","cta1Url","cta2Text","cta2Url","orderIndex","isActive"];
     for (const f of fields) {
@@ -72,7 +72,7 @@ router.patch("/slides/:id", requireAuth, async (req, res) => {
 
 router.delete("/slides/:id", requireAuth, async (req, res) => {
   try {
-    await db.delete(slidesTable).where(eq(slidesTable.id, req.params.id));
+    await db.delete(slidesTable).where(eq(slidesTable.id, req.params["id"] as string));
     res.status(204).end();
   } catch (err) {
     req.log.error(err);

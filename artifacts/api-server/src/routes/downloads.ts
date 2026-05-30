@@ -70,7 +70,7 @@ router.patch("/downloads/:id", requireAuth, async (req, res) => {
     const fields = ["titleFr","titleEn","fileUrl","fileType","category","audience","publishDate","isActive"];
     for (const f of fields) { if (req.body[f] !== undefined) updates[f] = req.body[f]; }
     updates.updatedAt = new Date();
-    const [updated] = await db.update(downloadsTable).set(updates).where(eq(downloadsTable.id, req.params.id)).returning();
+    const [updated] = await db.update(downloadsTable).set(updates).where(eq(downloadsTable.id, req.params["id"] as string)).returning();
     if (!updated) { res.status(404).json({ error: "Not found" }); return; }
     res.json(formatDownload(updated));
   } catch (err) {
@@ -81,7 +81,7 @@ router.patch("/downloads/:id", requireAuth, async (req, res) => {
 
 router.delete("/downloads/:id", requireAuth, async (req, res) => {
   try {
-    await db.delete(downloadsTable).where(eq(downloadsTable.id, req.params.id));
+    await db.delete(downloadsTable).where(eq(downloadsTable.id, req.params["id"] as string));
     res.status(204).end();
   } catch (err) {
     req.log.error(err);

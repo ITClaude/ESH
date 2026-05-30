@@ -110,7 +110,7 @@ router.patch("/events/:id", requireAuth, async (req, res) => {
     if (req.body.startDatetime !== undefined) updates.startDatetime = new Date(req.body.startDatetime);
     if (req.body.endDatetime !== undefined) updates.endDatetime = req.body.endDatetime ? new Date(req.body.endDatetime) : null;
     updates.updatedAt = new Date();
-    const [updated] = await db.update(eventsTable).set(updates).where(eq(eventsTable.id, req.params.id)).returning();
+    const [updated] = await db.update(eventsTable).set(updates).where(eq(eventsTable.id, req.params["id"] as string)).returning();
     if (!updated) { res.status(404).json({ error: "Not found" }); return; }
     res.json(formatEvent(updated));
   } catch (err) {
@@ -121,7 +121,7 @@ router.patch("/events/:id", requireAuth, async (req, res) => {
 
 router.delete("/events/:id", requireAuth, async (req, res) => {
   try {
-    await db.delete(eventsTable).where(eq(eventsTable.id, req.params.id));
+    await db.delete(eventsTable).where(eq(eventsTable.id, req.params["id"] as string));
     res.status(204).end();
   } catch (err) {
     req.log.error(err);
