@@ -9,7 +9,7 @@ services:
   - type: web
     name: esh-api
     runtime: node
-    plan: free
+    plan: starter
     rootDir: .
     buildCommand: >
       corepack enable &&
@@ -28,13 +28,12 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
-        sync: false  # Fill in your frontend URL after first deploy (e.g. https://esh-site.onrender.com)
+        sync: false  # Fill in your frontend URL after first deploy (e.g. https://esh-frontend.onrender.com)
 
   # ── Frontend Static Site ────────────────────────────────────────────────────
   - type: web
     name: esh-frontend
     runtime: static
-    plan: free
     rootDir: .
     buildCommand: >
       corepack enable &&
