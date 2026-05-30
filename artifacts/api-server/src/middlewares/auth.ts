@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "esh-secret-2025-change-in-production";
+const _jwtSecretEnv = process.env.JWT_SECRET;
+if (!_jwtSecretEnv && process.env.NODE_ENV === "production") {
+  throw new Error("JWT_SECRET environment variable must be set in production.");
+}
+const JWT_SECRET = _jwtSecretEnv ?? "esh-dev-secret-not-for-production";
 
 export interface AdminPayload {
   id: string;

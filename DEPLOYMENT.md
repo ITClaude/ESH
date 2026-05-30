@@ -65,13 +65,18 @@ Go to **https://render.com** → click **Get Started** → sign up (you can use 
 
 After the Blueprint creates the services, you need to link them together.
 
-#### 6a — Set FRONTEND_URL on the API service
+#### 6a — Note on auto-generated secrets
+Render Blueprint automatically generates secure random values for `JWT_SECRET`
+(used to sign admin login tokens). You do not need to set this yourself — Render
+handles it. **Never copy or share this value.**
+
+#### 6b — Set FRONTEND_URL on the API service
 1. Go to **esh-api** → **Environment**
 2. Find `FRONTEND_URL` (it shows as "sync: false — fill in manually")
 3. Set its value to your frontend URL, e.g.: `https://esh-frontend.onrender.com`
 4. Click **Save Changes** → the API will redeploy automatically
 
-#### 6b — Set VITE_API_BASE_URL on the frontend
+#### 6c — Set VITE_API_BASE_URL on the frontend
 1. Go to **esh-frontend** → **Environment**
 2. Find `VITE_API_BASE_URL`
 3. Set its value to your API URL, e.g.: `https://esh-api.onrender.com`

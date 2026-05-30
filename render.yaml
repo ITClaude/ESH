@@ -25,7 +25,7 @@ services:
         fromDatabase:
           name: esh-db
           property: connectionString
-      - key: SESSION_SECRET
+      - key: JWT_SECRET
         generateValue: true
       - key: FRONTEND_URL
         sync: false  # Fill in your frontend URL after first deploy (e.g. https://esh-site.onrender.com)
