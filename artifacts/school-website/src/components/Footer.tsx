@@ -17,8 +17,12 @@ export function Footer() {
         {/* Col 1: School identity */}
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-[hsl(49,87%,60%)] flex items-center justify-center flex-shrink-0">
-              <GraduationCap className="w-5 h-5 text-[hsl(209,64%,28%)]" />
+            <div className="w-10 h-10 rounded-full bg-[hsl(49,87%,60%)] flex items-center justify-center flex-shrink-0 overflow-hidden">
+              {s.logoUrl ? (
+                <img src={s.logoUrl} alt="Logo" className="w-full h-full object-contain p-1" />
+              ) : (
+                <GraduationCap className="w-5 h-5 text-[hsl(209,64%,28%)]" />
+              )}
             </div>
             <div>
               <div className="font-serif font-bold text-base leading-tight">Ecole Saint Hannibal</div>

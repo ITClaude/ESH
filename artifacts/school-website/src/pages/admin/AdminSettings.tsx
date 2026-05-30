@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { useGetSettingsMap, getGetSettingsMapQueryKey, useBulkUpdateSettings } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Check, Save } from "lucide-react";
+import { Check, Save, Upload, X, ImageIcon } from "lucide-react";
 
 type Tab = "general" | "contact" | "social" | "admissions" | "advanced";
 
@@ -23,6 +23,158 @@ function Field({ label, value, onChange, type = "text", placeholder = "" }: { la
       ) : (
         <input type={type} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[hsl(var(--primary))]" value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} />
       )}
+    </div>
+  );
+}
+
+function LogoUploader({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState("");
+  const [urlInput, setUrlInput] = useState("");
+  const [mode, setMode] = useState<"upload" | "url">("upload");
+
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setError("");
+    if (!file.type.startsWith("image/")) {
+      setError("Veuillez sélectionner une image (PNG, JPG, SVG, WebP).");
+      return;
+    }
+    if (file.size > 1024 * 1024) {
+      setError("L'image est trop grande (max 1 Mo). Essayez de la compresser d'abord.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const result = ev.target?.result as string;
+      onChange(result);
+    };
+    reader.readAsDataURL(file);
+    // Reset input so same file can be re-selected
+    e.target.value = "";
+  }
+
+  function handleUrlSave() {
+    if (urlInput.trim()) {
+      onChange(urlInput.trim());
+      setUrlInput("");
+    }
+  }
+
+  return (
+    <div className="md:col-span-2">
+      <label className="block text-xs font-medium text-gray-700 mb-3">Logo de l'école</label>
+      <div className="flex flex-col sm:flex-row gap-6 items-start">
+        {/* Preview */}
+        <div className="flex-shrink-0">
+          <div className="w-32 h-32 rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative group">
+            {value ? (
+              <>
+                <img
+                  src={value}
+                  alt="Logo"
+                  className="w-full h-full object-contain p-2"
+                  data-testid="logo-preview"
+                />
+                <button
+                  onClick={() => onChange("")}
+                  className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                  title="Supprimer le logo"
+                  data-testid="logo-remove"
+                  type="button"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </>
+            ) : (
+              <div className="text-center text-gray-400">
+                <ImageIcon className="w-8 h-8 mx-auto mb-1" />
+                <div className="text-xs">Aucun logo</div>
+              </div>
+            )}
+          </div>
+          {value && (
+            <p className="text-xs text-green-600 mt-1 text-center">✓ Logo défini</p>
+          )}
+        </div>
+
+        {/* Upload controls */}
+        <div className="flex-1 space-y-4">
+          {/* Mode switcher */}
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setMode("upload")}
+              className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${mode === "upload" ? "bg-[hsl(var(--primary))] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            >
+              Téléverser un fichier
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("url")}
+              className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${mode === "url" ? "bg-[hsl(var(--primary))] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            >
+              Entrer une URL
+            </button>
+          </div>
+
+          {mode === "upload" ? (
+            <div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/svg+xml,image/webp,image/gif"
+                className="hidden"
+                onChange={handleFile}
+                data-testid="logo-file-input"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2 px-4 py-2.5 border-2 border-dashed border-[hsl(var(--primary))]/40 text-[hsl(var(--primary))] rounded-lg text-sm hover:border-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/5 transition-all"
+                data-testid="logo-upload-button"
+              >
+                <Upload className="w-4 h-4" />
+                Choisir une image…
+              </button>
+              <p className="text-xs text-gray-400 mt-2">Formats acceptés : PNG, JPG, SVG, WebP. Max 1 Mo.</p>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <input
+                type="url"
+                value={urlInput}
+                onChange={e => setUrlInput(e.target.value)}
+                placeholder="https://exemple.com/logo.png"
+                className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[hsl(var(--primary))]"
+                data-testid="logo-url-input"
+                onKeyDown={e => e.key === "Enter" && handleUrlSave()}
+              />
+              <button
+                type="button"
+                onClick={handleUrlSave}
+                className="px-3 py-2 bg-[hsl(var(--primary))] text-white rounded text-sm hover:opacity-90"
+              >
+                OK
+              </button>
+            </div>
+          )}
+
+          {error && (
+            <p className="text-xs text-red-600 flex items-center gap-1">
+              <X className="w-3.5 h-3.5" /> {error}
+            </p>
+          )}
+
+          <p className="text-xs text-gray-500 bg-gray-50 rounded-lg p-3 leading-relaxed">
+            Le logo s'affiche dans la barre de navigation et le pied de page du site.
+            Sans logo, une icône par défaut est utilisée.
+            <br />
+            <strong>Conseil :</strong> Utilisez un PNG transparent ou un SVG pour un meilleur rendu.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -68,7 +220,10 @@ export default function AdminSettings() {
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           {tab === "general" && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <Field label="Nom de l'école (FR)" value={settings.schoolNameFr ?? ""} onChange={v => upd("schoolNameFr", v)} data-testid="input-school-name-fr" />
+              {/* Logo upload — full width at top */}
+              <LogoUploader value={settings.logoUrl ?? ""} onChange={v => upd("logoUrl", v)} />
+
+              <Field label="Nom de l'école (FR)" value={settings.schoolNameFr ?? ""} onChange={v => upd("schoolNameFr", v)} />
               <Field label="School Name (EN)" value={settings.schoolNameEn ?? ""} onChange={v => upd("schoolNameEn", v)} />
               <Field label="Devise (FR)" value={settings.taglineFr ?? ""} onChange={v => upd("taglineFr", v)} />
               <Field label="Tagline (EN)" value={settings.taglineEn ?? ""} onChange={v => upd("taglineEn", v)} />

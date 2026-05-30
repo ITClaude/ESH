@@ -47,9 +47,10 @@ interface NavItem { label: string; href?: string; dropdown?: DropdownItem[]; }
 interface NavbarProps {
   banner?: string | null;
   onDismissBanner?: () => void;
+  logoUrl?: string | null;
 }
 
-export function Navbar({ banner, onDismissBanner }: NavbarProps) {
+export function Navbar({ banner, onDismissBanner, logoUrl }: NavbarProps) {
   const { lang } = useLang();
   const n = NAV[lang];
   const [location] = useLocation();
@@ -120,8 +121,12 @@ export function Navbar({ banner, onDismissBanner }: NavbarProps) {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 group" data-testid="navbar-logo">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[hsl(49,87%,60%)] flex items-center justify-center flex-shrink-0">
-              <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(209,64%,28%)]" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[hsl(49,87%,60%)] flex items-center justify-center flex-shrink-0 overflow-hidden">
+              {logoUrl ? (
+                <img src={logoUrl} alt="Logo" className="w-full h-full object-contain p-1" />
+              ) : (
+                <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(209,64%,28%)]" />
+              )}
             </div>
             <div className="text-white">
               <div className="font-serif font-bold text-sm sm:text-base leading-tight">Ecole Saint Hannibal</div>

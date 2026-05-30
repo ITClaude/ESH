@@ -14,6 +14,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
       <Navbar
         banner={showBanner ? s.announcementBanner : null}
         onDismissBanner={() => setBannerDismissed(true)}
+        logoUrl={s.logoUrl || null}
       />
       {/*
         Padding-top offsets the fixed header.

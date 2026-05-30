@@ -40,7 +40,7 @@ function AlbumDetail({ albumId, onBack }: { albumId: string; onBack: () => void 
 
   function addItem() {
     if (!newUrl.trim()) return;
-    addItemMutation.mutate({ albumId, data: { albumId, mediaUrl: newUrl, captionFr: newCaption || null, mediaType: "photo", orderIndex: items.length } });
+    addItemMutation.mutate({ albumId, data: { mediaUrl: newUrl, captionFr: newCaption || undefined, mediaType: "photo", orderIndex: items.length } });
     setNewUrl(""); setNewCaption("");
   }
 
