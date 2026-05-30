@@ -1,0 +1,1 @@
+- [Deployment (Vercel + Railway)](deployment.md) — frontend→Vercel, API→Railway; Vercel Root Directory must be repo root or it builds the wrong package.
