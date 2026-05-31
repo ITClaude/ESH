@@ -1,12 +1,8 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
 import { GraduationCap, Eye, EyeOff, Lock } from "lucide-react";
 import { useAdminLogin } from "@workspace/api-client-react";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function AdminLogin() {
-  const [, setLocation] = useLocation();
-  const qc = useQueryClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -17,8 +13,9 @@ export default function AdminLogin() {
       onSuccess: (data: any) => {
         if (data?.token) {
           localStorage.setItem("esh_admin_token", data.token);
-          qc.invalidateQueries();
-          setLocation("/admin/dashboard");
+          // Full-page navigation so AdminAuthProvider re-initializes with the
+          // token present and fetches /admin/me before the route guard runs.
+          window.location.href = `${import.meta.env.BASE_URL}admin/dashboard`;
         }
       },
       onError: () => {

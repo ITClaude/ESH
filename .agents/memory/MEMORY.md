@@ -1,1 +1,2 @@
 - [Deployment (Vercel + Railway)](deployment.md) — frontend→Vercel, API→Railway; Vercel Root Directory must be repo root or it builds the wrong package.
+- [Admin auth redirect race](auth-redirect-race.md) — admin login/logout must full-page navigate; /admin/me `enabled` localStorage read is non-reactive, so SPA redirect bounces back to login.

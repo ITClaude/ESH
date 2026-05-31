@@ -29,7 +29,7 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   function logout() {
     localStorage.removeItem("esh_admin_token");
     qc.clear();
-    window.location.href = "/admin/login";
+    window.location.href = `${import.meta.env.BASE_URL}admin/login`;
   }
 
   return (
