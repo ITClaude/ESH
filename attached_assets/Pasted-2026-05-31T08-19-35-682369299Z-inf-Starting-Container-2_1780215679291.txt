@@ -1,0 +1,73 @@
+2026-05-31T08:19:35.682369299Z [inf]  Starting Container
+2026-05-31T08:19:36.934205442Z [err]  /app/lib/db/src/index.ts:8
+2026-05-31T08:19:36.934210682Z [err]    throw new Error(
+2026-05-31T08:19:36.934215372Z [err]          ^
+2026-05-31T08:19:36.934220342Z [err]  
+2026-05-31T08:19:36.934224371Z [err]  
+2026-05-31T08:19:36.934229531Z [err]  Error: DATABASE_URL must be set. Did you forget to provision a database?
+2026-05-31T08:19:36.934233311Z [err]      at <anonymous> (/app/lib/db/src/index.ts:8:9)
+2026-05-31T08:19:36.934236891Z [err]      at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+2026-05-31T08:19:36.934242651Z [err]      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2026-05-31T08:19:36.934246641Z [err]      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2026-05-31T08:19:36.934251041Z [err]  
+2026-05-31T08:19:36.934254441Z [err]  Node.js v22.14.0
+2026-05-31T08:19:36.934257671Z [err]  /app/lib/db/src/index.ts:8
+2026-05-31T08:19:36.934261131Z [err]    throw new Error(
+2026-05-31T08:19:36.934265091Z [err]          ^
+2026-05-31T08:19:36.934269101Z [err]  
+2026-05-31T08:19:36.934273181Z [err]  
+2026-05-31T08:19:36.934276241Z [err]  Error: DATABASE_URL must be set. Did you forget to provision a database?
+2026-05-31T08:19:36.934280091Z [err]      at <anonymous> (/app/lib/db/src/index.ts:8:9)
+2026-05-31T08:19:36.934283541Z [err]      at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+2026-05-31T08:19:36.934286891Z [err]      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2026-05-31T08:19:36.934290101Z [err]      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2026-05-31T08:19:36.934293521Z [err]  
+2026-05-31T08:19:36.934296841Z [err]  Node.js v22.14.0
+2026-05-31T08:19:36.934300131Z [err]  /app/lib/db/src/index.ts:8
+2026-05-31T08:19:36.934303331Z [err]    throw new Error(
+2026-05-31T08:19:36.934306571Z [err]          ^
+2026-05-31T08:19:36.934309631Z [err]  
+2026-05-31T08:19:36.934312541Z [err]  
+2026-05-31T08:19:36.934315920Z [err]  Error: DATABASE_URL must be set. Did you forget to provision a database?
+2026-05-31T08:19:36.934318910Z [err]      at <anonymous> (/app/lib/db/src/index.ts:8:9)
+2026-05-31T08:19:36.934322180Z [err]      at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+2026-05-31T08:19:36.934324930Z [err]      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2026-05-31T08:19:36.934328130Z [err]      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2026-05-31T08:19:36.934331000Z [err]  
+2026-05-31T08:19:36.934333810Z [err]  Node.js v22.14.0
+2026-05-31T08:19:37.198110429Z [err]  /app/lib/db/src/index.ts:8
+2026-05-31T08:19:37.198115999Z [err]    throw new Error(
+2026-05-31T08:19:37.198122639Z [err]          ^
+2026-05-31T08:19:37.198127359Z [err]  
+2026-05-31T08:19:37.198132019Z [err]  
+2026-05-31T08:19:37.198136118Z [err]  Error: DATABASE_URL must be set. Did you forget to provision a database?
+2026-05-31T08:19:37.198140718Z [err]      at <anonymous> (/app/lib/db/src/index.ts:8:9)
+2026-05-31T08:19:37.198144898Z [err]      at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+2026-05-31T08:19:37.198149538Z [err]      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2026-05-31T08:19:37.198153598Z [err]      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2026-05-31T08:19:37.198157448Z [err]  
+2026-05-31T08:19:37.198160948Z [err]  Node.js v22.14.0
+2026-05-31T08:19:37.793571553Z [err]  /app/lib/db/src/index.ts:8
+2026-05-31T08:19:37.793581023Z [err]    throw new Error(
+2026-05-31T08:19:37.793585663Z [err]          ^
+2026-05-31T08:19:37.793601063Z [err]  
+2026-05-31T08:19:37.793604703Z [err]  
+2026-05-31T08:19:37.793608363Z [err]  Error: DATABASE_URL must be set. Did you forget to provision a database?
+2026-05-31T08:19:37.793611453Z [err]      at <anonymous> (/app/lib/db/src/index.ts:8:9)
+2026-05-31T08:19:37.793615612Z [err]      at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+2026-05-31T08:19:37.793619052Z [err]      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2026-05-31T08:19:37.793622382Z [err]      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2026-05-31T08:19:37.793625352Z [err]  
+2026-05-31T08:19:37.793628412Z [err]  Node.js v22.14.0
+2026-05-31T08:19:38.327689715Z [err]  /app/lib/db/src/index.ts:8
+2026-05-31T08:19:38.327694245Z [err]    throw new Error(
+2026-05-31T08:19:38.327697685Z [err]          ^
+2026-05-31T08:19:38.327700915Z [err]  
+2026-05-31T08:19:38.327703785Z [err]  
+2026-05-31T08:19:38.327707205Z [err]  Error: DATABASE_URL must be set. Did you forget to provision a database?
+2026-05-31T08:19:38.327710685Z [err]      at <anonymous> (/app/lib/db/src/index.ts:8:9)
+2026-05-31T08:19:38.327713485Z [err]      at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+2026-05-31T08:19:38.327715965Z [err]      at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+2026-05-31T08:19:38.327718205Z [err]      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2026-05-31T08:19:38.327721315Z [err]  
+2026-05-31T08:19:38.327725425Z [err]  Node.js v22.14.0
