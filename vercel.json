@@ -5,6 +5,7 @@
   "buildCommand": "pnpm --filter @workspace/school-website run build",
   "outputDirectory": "artifacts/school-website/dist/public",
   "rewrites": [
+    { "source": "/api/:path*", "destination": "https://esh-production-5fd7.up.railway.app/api/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
