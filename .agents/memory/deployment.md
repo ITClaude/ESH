@@ -24,6 +24,17 @@ own auto-typecheck of `pino-http`) instead of the frontend.
 just `public`/`dist`). SPA catch-all rewrite `/(.*) -> /index.html` is required
 or deep links 404 on refresh.
 
+## Railway — pin pnpm or frozen install fails
+Nixpacks defaults to **pnpm 9** when root `package.json` has no `packageManager`
+field, but this repo's lockfile is pnpm 10 with `overrides` in
+`pnpm-workspace.yaml`. pnpm 9 reads overrides from a different place, so
+`pnpm i --frozen-lockfile` aborts with `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH ...
+"overrides" configuration doesn't match`.
+**Why:** pnpm 9 vs 10 disagree on where `overrides` live.
+**How to apply:** Keep `"packageManager": "pnpm@<exact local version>"` in root
+`package.json` (Nixpacks/corepack honors it). Update it whenever the local pnpm
+major changes, or Railway installs will break again.
+
 ## Railway — esbuild bundle dodges the tsc error
 Railway builds via `pnpm --filter @workspace/api-server run build` which is
 esbuild only (no `tsc`), so it does NOT hit the Vercel-style type errors. The
